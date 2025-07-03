@@ -1,33 +1,206 @@
 /* src/components/Day.css */
 .day {
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #f9f9f9;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 15px;
+  padding: 15px;
+  min-height: 120px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  position: relative;
+  overflow: hidden;
 }
 
-.day h3 {
-  margin: 0;
-  font-size: 1.2em;
+.day:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  border-color: #4a7c59;
+}
+
+.day.has-events {
+  background: linear-gradient(135deg, #f8fbf9, #ffffff);
+  border-color: #4a7c59;
+}
+
+.day-number {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2c5530;
+  margin: 0 0 10px 0;
+  text-align: center;
+  padding: 8px;
+  background: #f0f9f2;
+  border-radius: 10px;
+  position: relative;
+}
+
+.day.today .day-number {
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
+  color: white;
+  box-shadow: 0 3px 15px rgba(255, 107, 53, 0.3);
 }
 
 .schedule-list {
   width: 100%;
-  margin-top: 10px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .schedule-item {
-  background-color: #e3f2fd;
-  margin-bottom: 8px;
-  padding: 5px;
-  border-radius: 3px;
+  background: linear-gradient(135deg, #e8f5e8, #f0f9f2);
+  border: 1px solid #c8e6c9;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 12px;
+  line-height: 1.3;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 
+.schedule-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  background: linear-gradient(135deg, #d4e6d4, #e8f5e8);
+}
+
+.schedule-item:hover .click-indicator {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.schedule-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--category-color, #4a7c59);
+}
+
+/* Category-specific colors */
+.schedule-item.lecture::before { background: #1976d2; }
+.schedule-item.lab::before { background: #7b1fa2; }
+.schedule-item.meeting::before { background: #388e3c; }
+.schedule-item.office-hours::before { background: #f57c00; }
+.schedule-item.assignment::before { background: #d32f2f; }
+.schedule-item.defense::before { background: #512da8; }
+.schedule-item.workshop::before { background: #00796b; }
+.schedule-item.study-group::before { background: #455a64; }
+.schedule-item.seminar::before { background: #c2185b; }
+.schedule-item.grading::before { background: #5d4037; }
+.schedule-item.advising::before { background: #303f9f; }
+
+.schedule-name {
+  font-weight: 600;
+  color: #2c5530;
+  margin: 0 0 4px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.schedule-time {
+  color: #666;
+  font-size: 11px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.schedule-time::before {
+  content: '🕐';
+  font-size: 10px;
+}
+
+.schedule-content {
+  color: #777;
+  font-size: 11px;
+  margin-top: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.priority-indicator {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.priority-1 { background: #4caf50; }
+.priority-2 { background: #ff9800; }
+.priority-3 { background: #f44336; }
+
 .no-schedule {
-  color: #aaa;
-  font-size: 0.9em;
+  color: #bbb;
+  font-size: 13px;
+  text-align: center;
+  padding: 20px 10px;
+  font-style: italic;
+}
+
+.event-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(255, 107, 53, 0.3);
+  border: 2px solid white;
+}
+
+.click-indicator {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 10px;
+  opacity: 0;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 768px) {
+  .day {
+    padding: 12px;
+    min-height: 100px;
+  }
+  
+  .day-number {
+    font-size: 18px;
+    padding: 6px;
+  }
+  
+  .schedule-item {
+    padding: 6px 8px;
+    font-size: 11px;
+  }
 }

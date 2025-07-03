@@ -14,7 +14,7 @@ def load_config():
     return config['DEFAULT']
 
 def create_test_schedules():
-    """Create CanopyAI University schedules for teachers and students"""
+    """Create Redwood Digital University schedules for teachers and students"""
     
     # Get current date and create schedules for this month
     today = datetime.now()
@@ -26,7 +26,7 @@ def create_test_schedules():
         {
             "sid": "class-cs301",
             "name": "CS 301: Machine Learning",
-            "content": "Introduction to Neural Networks - Lecture Hall B203, CanopyAI University",
+            "content": "Introduction to Neural Networks - Lecture Hall B203, Redwood Digital University",
             "category": "Lecture",
             "level": 3,
             "status": 0.0,

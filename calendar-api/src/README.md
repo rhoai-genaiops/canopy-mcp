@@ -50,7 +50,7 @@ python test_data.py
 python test_data.py clear
 ```
 
-The test data includes various CanopyAI University activities (lectures, labs, office hours, assignments, faculty meetings, PhD defenses, workshops, study groups, etc.) across different dates to demonstrate the academic calendar functionality.
+The test data includes various Redwood Digital University activities (lectures, labs, office hours, assignments, faculty meetings, PhD defenses, workshops, study groups, etc.) across different dates to demonstrate the academic calendar functionality.
 
 ## Local Development
 

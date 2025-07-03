@@ -7,10 +7,11 @@ function App() {
   return (
     <div className="App">
       <header className="app-header">
-        <img src="/canopyai-logo.png" alt="CanopyAI University" className="university-logo" />
+        <img src="/canopyai-logo.png" alt="CanopyAI System" className="university-logo" />
         <div className="header-text">
-          <h1>CanopyAI University</h1>
-          <h2>Academic Calendar</h2>
+          <h1>Redwood Digital University</h1>
+          <h2>Academic Calendar System</h2>
+          <p className="powered-by">Powered by CanopyAI</p>
         </div>
       </header>
       <Calendar />
