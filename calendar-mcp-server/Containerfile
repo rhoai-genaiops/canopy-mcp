@@ -1,0 +1,28 @@
+# Use Python 3.11 base image
+FROM python:3.11-slim
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy server code
+COPY server.py .
+
+# Make server executable
+RUN chmod +x server.py
+
+# Create non-root user for security
+RUN useradd -r -s /bin/false mcp-user && \
+    chown -R mcp-user:mcp-user /app
+
+# Switch to non-root user
+USER mcp-user
+
+# Set environment variables
+ENV CALENDAR_API_BASE_URL="http://calendar-api:8000"
+
+# Run the MCP server
+CMD ["python", "server.py"]

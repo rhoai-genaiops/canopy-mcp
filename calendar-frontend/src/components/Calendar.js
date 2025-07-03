@@ -54,18 +54,52 @@ const Calendar = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    // Automatically set the creation_time and generate a unique sid
-    const currentDateTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    const uniqueSid = `${Date.now()}`; // Use the current timestamp as a unique ID
+    // Validate required fields
+    if (!newSchedule.name || !newSchedule.start_time || !newSchedule.end_time) {
+      alert('Please fill in all required fields (Event Name, Start Time, End Time)');
+      return;
+    }
 
-    // Prepare the schedule data with correct types
-    const formattedSchedule = {
-      ...newSchedule,
-      sid: uniqueSid,
-      creation_time: currentDateTime,
-      status: parseFloat(newSchedule.status),
-      level: parseInt(newSchedule.level),
+    // Validate start time is before end time
+    if (new Date(newSchedule.start_time) >= new Date(newSchedule.end_time)) {
+      alert('Start time must be before end time');
+      return;
+    }
+
+    // Generate unique SID with random component to avoid duplicates
+    const timestamp = Date.now();
+    const random = Math.floor(Math.random() * 1000);
+    const uniqueSid = `event-${timestamp}-${random}`;
+
+    // Format datetime strings for backend (YYYY-MM-DD HH:MM:SS)
+    const formatDateTime = (dateTimeStr) => {
+      const date = new Date(dateTimeStr);
+      return date.getFullYear() + '-' + 
+             String(date.getMonth() + 1).padStart(2, '0') + '-' + 
+             String(date.getDate()).padStart(2, '0') + ' ' + 
+             String(date.getHours()).padStart(2, '0') + ':' + 
+             String(date.getMinutes()).padStart(2, '0') + ':' + 
+             String(date.getSeconds()).padStart(2, '0');
     };
+
+    const currentDateTime = formatDateTime(new Date());
+    const startTime = formatDateTime(newSchedule.start_time);
+    const endTime = formatDateTime(newSchedule.end_time);
+
+    // Prepare the schedule data with correct types and validation
+    const formattedSchedule = {
+      sid: uniqueSid,
+      name: newSchedule.name.trim(),
+      content: newSchedule.content.trim() || "",
+      category: newSchedule.category,
+      level: parseInt(newSchedule.level || 1), // Backend accepts 1,2,3
+      status: parseFloat(newSchedule.status || 0.0),
+      creation_time: currentDateTime,
+      start_time: startTime,
+      end_time: endTime
+    };
+
+    console.log('Submitting schedule:', formattedSchedule);
 
     try {
       const response = await axios.post('http://127.0.0.1:8000/schedules', formattedSchedule, {
@@ -73,10 +107,41 @@ const Calendar = () => {
           'Content-Type': 'application/json',
         },
       });
-      setSchedules([...schedules, response.data]);
+      console.log('Successfully created schedule:', response.data);
+      
+      // Reset form
+      setNewSchedule({
+        sid: "",
+        name: "",
+        content: "",
+        category: "Lecture",
+        level: 1,
+        status: 0.0,
+        creation_time: "",
+        start_time: "",
+        end_time: ""
+      });
+      
+      // Close form
       setShowForm(false);
+      
+      // Refresh schedules from server
+      fetchSchedules();
+      
+      alert('Event created successfully! 🎉');
     } catch (error) {
       console.error('Error creating schedule:', error.response?.data || error.message);
+      let errorMsg = 'Unknown error occurred';
+      
+      if (error.response?.status === 400) {
+        errorMsg = 'Invalid data - please check your inputs';
+      } else if (error.response?.data?.detail) {
+        errorMsg = error.response.data.detail;
+      } else if (error.message) {
+        errorMsg = error.message;
+      }
+      
+      alert(`❌ Error creating event: ${errorMsg}`);
     }
   };
 
@@ -118,6 +183,7 @@ const Calendar = () => {
             <input 
               type="text" 
               name="name" 
+              value={newSchedule.name}
               placeholder="e.g., CS 301: Machine Learning Lecture"
               onChange={handleInputChange} 
               required 
@@ -128,6 +194,7 @@ const Calendar = () => {
             <label>Description</label>
             <textarea 
               name="content" 
+              value={newSchedule.content}
               placeholder="Event details, location, notes..."
               onChange={handleInputChange}
               rows="3"
@@ -165,12 +232,24 @@ const Calendar = () => {
           <div className="form-row">
             <div className="form-group">
               <label>Start Time</label>
-              <input type="datetime-local" name="start_time" onChange={handleInputChange} required />
+              <input 
+                type="datetime-local" 
+                name="start_time" 
+                value={newSchedule.start_time}
+                onChange={handleInputChange} 
+                required 
+              />
             </div>
 
             <div className="form-group">
               <label>End Time</label>
-              <input type="datetime-local" name="end_time" onChange={handleInputChange} required />
+              <input 
+                type="datetime-local" 
+                name="end_time" 
+                value={newSchedule.end_time}
+                onChange={handleInputChange} 
+                required 
+              />
             </div>
           </div>
 

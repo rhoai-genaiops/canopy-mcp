@@ -10,7 +10,8 @@ class Method:
         self.columns = json.loads(self.info['columns'])
 
     def check_params(self, jsn):
-        if jsn['level'] not in [0, 1, 2, 3]:
+        # Accept priority levels 1, 2, 3 (Low, Medium, High)
+        if jsn['level'] not in [1, 2, 3]:
             return False
         if not (0 <= jsn['status'] <= 1):
             return False
