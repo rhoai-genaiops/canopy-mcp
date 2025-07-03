@@ -1,11 +1,13 @@
 # Redwood Digital University Calendar System
 
-A comprehensive academic calendar system powered by CanopyAI, featuring a Python FastAPI backend, React frontend, and Model Context Protocol (MCP) server for AI agent integration.
+A comprehensive academic calendar system powered by CanopyAI, featuring a Python FastAPI backend, React frontend, 
+and Model Context Protocol (MCP) server for AI agent integration.
 
 ## 🎓 Overview
 
-This repository contains a complete university calendar management system designed for **Redwood Digital University**. The system includes:
+This repository contains a complete university calendar management system designed for **Redwood Digital University**. 
 
+The system includes:
 - **📚 Academic Calendar Backend** - FastAPI-based REST API for calendar management
 - **🎨 Modern Web Frontend** - React-based user interface with beautiful design
 - **🤖 MCP Server Integration** - AI agent integration via Model Context Protocol
@@ -15,7 +17,8 @@ This repository contains a complete university calendar management system design
 
 ### 🤖 What is the MCP Server?
 
-The **Model Context Protocol (MCP) Server** allows AI agents to interact with your calendar using natural language. Instead of manually clicking through the web interface, you can simply ask an AI assistant:
+The **Model Context Protocol (MCP) Server** allows AI agents to interact with your calendar using natural language. 
+Instead of manually clicking through the web interface, you can simply ask an AI assistant:
 
 - *"Show me all my lectures this week"*
 - *"Create a meeting with Dr. Smith tomorrow at 2 PM"*
@@ -37,23 +40,6 @@ The MCP server translates these natural language requests into calendar operatio
 └─────────────────────┘    └─────────────────────┘    └─────────────────────┘
 ```
 
-## 🎯 Features
-
-### 📚 Academic Calendar Backend
-- **Event Management** - Create, read, update, delete academic events
-- **Category Support** - Lectures, Labs, Meetings, Office Hours, Assignments, etc.
-- **Priority Levels** - Low, Medium, High priority classification
-- **Status Tracking** - Not Started, In Progress, Completed
-- **University Data** - Sample Redwood Digital University events
-
-### 🎨 Modern Web Frontend
-- **Beautiful UI** - Modern design with university branding
-- **Interactive Calendar** - Monthly view with event details
-- **Event Modal** - Detailed event information popup
-- **Event Creation** - User-friendly form for new events
-- **Responsive Design** - Works on desktop, tablet, and mobile
-- **Click-to-View** - Click events to see full details
-
 ### 🤖 MCP Server (AI Integration)
 - **9 Specialized Tools** for AI agents:
   1. `get_all_events` - List all events with filtering
@@ -65,14 +51,6 @@ The MCP server translates these natural language requests into calendar operatio
   7. `get_events_by_date` - Events for specific date
   8. `search_events` - Search by name/content
   9. `get_calendar_statistics` - Calendar analytics
-
-## 🎓 University Integration
-
-**Redwood Digital University** features:
-- University branding with CanopyAI system logo
-- Academic event categories and workflows
-- Sample data with realistic university schedules
-- Faculty, student, and administrative events
 
 ## 🔧 API Endpoints
 
@@ -121,6 +99,51 @@ podman run -p 8000:8000 calendar-api:latest
 podman run -e CALENDAR_API_BASE_URL="http://calendar-api:8000" calendar-mcp-server:latest
 ```
 
+## 🚀 Running Locally
+
+### Quick Start - All Services
+
+**Step 1: Start Backend API** (Terminal 1)
+```bash
+cd calendar-api/src
+uv run uvicorn server:app --reload --host 127.0.0.1 --port 8000
+```
+
+**Step 2: Start Frontend** (Terminal 2)
+```bash
+cd calendar-frontend
+npm install  # First time only
+npm start
+```
+
+**Step 3: Start MCP Server** (Terminal 3)
+```bash
+cd calendar-mcp-server
+export CALENDAR_API_BASE_URL="http://127.0.0.1:8000"
+python server.py
+```
+
+**Step 4: Test with MCP Inspector** (Terminal 4 - Optional)
+```bash
+npx @modelcontextprotocol/inspector \
+  uv \
+  --directory calendar-mcp-server \
+  run \
+  python \
+  server.py
+```
+
+### 🌐 Access Points
+- **Frontend:** http://localhost:3000
+- **Backend API:** http://127.0.0.1:8000
+- **MCP Inspector:** Opens automatically in browser
+
+### 🔄 Stop All Services
+```bash
+# Kill all running processes
+pkill -f "uvicorn.*server:app" && pkill -f "python.*server.py" && pkill -f "calendar"
+```
+
 ## 📊 Database Schema
 
 **Events Table:**
@@ -134,9 +157,3 @@ podman run -e CALENDAR_API_BASE_URL="http://calendar-api:8000" calendar-mcp-serv
 - `start_time` (TEXT) - Event start time
 - `end_time` (TEXT) - Event end time
 
-## 🎨 Screenshots
-
-- **Calendar View** - Monthly grid with events
-- **Event Details** - Popup modal with full information
-- **Event Creation** - Form for adding new events
-- **University Branding** - Redwood Digital University theme

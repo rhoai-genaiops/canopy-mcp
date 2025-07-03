@@ -2,9 +2,11 @@
 import React from 'react';
 import './Day.css';
 
-const Day = ({ day, schedules, onEventClick }) => {
+const Day = ({ day, schedules, onEventClick, currentMonth, currentYear }) => {
   const today = new Date();
-  const isToday = today.getDate() === day && today.getMonth() === new Date().getMonth();
+  const isToday = today.getDate() === day && 
+                  today.getMonth() === currentMonth && 
+                  today.getFullYear() === currentYear;
   const hasEvents = schedules.length > 0;
 
   const getCategoryClass = (category) => {

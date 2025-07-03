@@ -157,15 +157,66 @@ const Calendar = () => {
     setSelectedEvent(null);
   };
 
+  // Handle event deletion
+  const handleDeleteEvent = async (eventId) => {
+    if (!eventId) {
+      alert('❌ Error: No event ID provided');
+      return;
+    }
+
+    // Confirm deletion
+    const confirmed = window.confirm(
+      `Are you sure you want to delete this event?\n\nThis action cannot be undone.`
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await axios.delete(`http://127.0.0.1:8000/schedules/${eventId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log('Successfully deleted event:', eventId);
+      
+      // Close the modal
+      closeEventModal();
+      
+      // Refresh schedules from server
+      fetchSchedules();
+      
+      alert('✅ Event deleted successfully!');
+    } catch (error) {
+      console.error('Error deleting event:', error.response?.data || error.message);
+      let errorMsg = 'Unknown error occurred';
+      
+      if (error.response?.status === 404) {
+        errorMsg = 'Event not found - it may have already been deleted';
+      } else if (error.response?.status === 400) {
+        errorMsg = 'Invalid event ID';
+      } else if (error.response?.data?.detail) {
+        errorMsg = error.response.data.detail;
+      } else if (error.message) {
+        errorMsg = error.message;
+      }
+      
+      alert(`❌ Error deleting event: ${errorMsg}`);
+    }
+  };
+
   // Calculate the number of days in the current month
-  const daysInMonth = new Date(2024, currentMonth + 1, 0).getDate();
+  const currentYear = new Date().getFullYear();
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
   return (
     <div className="calendar-container">
       <div className="month-navigation">
         <button onClick={() => handleMonthChange(-1)}>← Previous</button>
-        <span>{new Date(2024, currentMonth).toLocaleString("default", { month: "long", year: "numeric" })}</span>
+        <span>{new Date(currentYear, currentMonth).toLocaleString("default", { month: "long", year: "numeric" })}</span>
         <button onClick={() => handleMonthChange(1)}>Next →</button>
       </div>
 
@@ -274,11 +325,14 @@ const Calendar = () => {
           <Day 
             key={day} 
             day={day} 
+            currentMonth={currentMonth}
+            currentYear={currentYear}
             schedules={schedules.filter(schedule => {
               const scheduleDate = new Date(schedule.start_time);
               return (
                 scheduleDate.getDate() === day &&
-                scheduleDate.getMonth() === currentMonth
+                scheduleDate.getMonth() === currentMonth &&
+                scheduleDate.getFullYear() === currentYear
               );
             })}
             onEventClick={handleEventClick}
@@ -291,6 +345,7 @@ const Calendar = () => {
         event={selectedEvent}
         isOpen={showEventModal}
         onClose={closeEventModal}
+        onDelete={handleDeleteEvent}
       />
     </div>
   );

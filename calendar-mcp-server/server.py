@@ -16,8 +16,13 @@ from mcp.server.models import InitializationOptions
 import mcp.server.stdio
 import mcp.types as types
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
+# Configure logging to stderr (so it doesn't interfere with stdin/stdout JSON-RPC)
+import sys
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    stream=sys.stderr  # Log to stderr, not stdout
+)
 logger = logging.getLogger("calendar-mcp-server")
 
 # Create the server instance
@@ -265,6 +270,8 @@ async def handle_call_tool(
     name: str, arguments: dict[str, Any] | None
 ) -> list[types.TextContent | types.ImageContent | types.EmbeddedResource]:
     """Handle calendar tool calls."""
+    
+    logger.info(f"🔧 Tool called: {name} with arguments: {arguments}")
     
     try:
         if name == "get_all_events":
@@ -575,6 +582,19 @@ async def handle_call_tool(
         ]
 
 async def main():
+    logger.info("🎓 Starting Redwood Digital University Calendar MCP Server")
+    logger.info(f"📡 Calendar API URL: {CALENDAR_API_BASE_URL}")
+    
+    # Test API connection
+    try:
+        test_result = await make_calendar_api_request("GET", "/")
+        logger.info(f"✅ Calendar API connection successful: {test_result}")
+    except Exception as e:
+        logger.error(f"❌ Calendar API connection failed: {e}")
+        logger.error("🔧 Make sure the calendar API is running on the configured URL")
+    
+    logger.info("🔄 MCP Server ready - waiting for JSON-RPC connections...")
+    
     # Run the server using stdio
     async with mcp.server.stdio.stdio_server() as (read_stream, write_stream):
         await server.run(

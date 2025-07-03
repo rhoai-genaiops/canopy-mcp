@@ -1,6 +1,7 @@
 # Redwood Digital University Calendar MCP Server
 
-This directory contains a custom Model Context Protocol (MCP) server that integrates with the Redwood Digital University academic calendar system, providing AI agents with comprehensive access to university scheduling, events, and academic activities.
+This directory contains a custom Model Context Protocol (MCP) server that integrates with the Redwood Digital University academic calendar system, 
+providing AI agents with comprehensive access to university scheduling, events, and academic activities.
 
 ## Overview
 
@@ -26,62 +27,6 @@ Before using the Calendar MCP server, make sure you have deployed the Calendar A
 # Start the Calendar API backend
 cd calendar-api/src
 uv run uvicorn server:app --reload --host 127.0.0.1 --port 8000
-
-# Or using traditional pip
-pip install -r requirements.txt
-python build.py  # Initialize database
-uvicorn server:app --reload --host 127.0.0.1 --port 8000
-```
-
-## Local Development
-
-### Setup with pipx (Recommended for macOS)
-
-**pipx** is the recommended way to install MCP tools globally on macOS for VS Code integration:
-
-```bash
-# Install pipx if you don't have it
-brew install pipx
-pipx ensurepath
-
-# Install MCP CLI tools globally
-pipx install mcp
-pipx install fastmcp
-
-# Install MCP Inspector for debugging and method discovery
-pipx install mcp-inspector
-
-# Verify installation
-mcp --version
-fastmcp --version
-mcp-inspector --version
-```
-
-### VS Code Integration & Method Discovery
-
-After installing with pipx, you can use VS Code with MCP support:
-
-```bash
-# Install VS Code MCP extension (if available)
-code --install-extension anthropic.mcp
-
-# Use MCP Inspector to explore available tools
-mcp-inspector calendar-mcp-server
-
-# Or inspect the server directly
-cd /path/to/calendar-mcp-server
-mcp-inspector server.py
-```
-
-### Alternative: Setup Python environment (Local Development)
-
-```bash
-# Create a virtual environment
-python3 -m venv venv
-source venv/bin/activate
-
-# Install required dependencies
-pip install -r requirements.txt
 ```
 
 ### Test locally
@@ -100,7 +45,22 @@ cd ../../calendar-mcp-server
 
 # Run the MCP server directly (it will wait for JSON-RPC input)
 python server.py
+
+# Expected output:
+# 🎓 Starting Redwood Digital University Calendar MCP Server
+# 📡 Calendar API URL: http://127.0.0.1:8000
+# ✅ Calendar API connection successful: {'app_name': 'calendar'}
+# 🔄 MCP Server ready - waiting for JSON-RPC connections...
 ```
+
+### Understanding MCP Server Logs
+
+The MCP server now shows helpful logs:
+- **🎓 Startup message** - Server is starting
+- **📡 API URL** - Shows which Calendar API it's connecting to
+- **✅ Connection test** - Confirms API is accessible
+- **🔄 Ready status** - Server is waiting for AI agent connections
+- **🔧 Tool calls** - Shows when AI agents use tools (when connected)
 
 ## Available Tools
 

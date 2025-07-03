@@ -2,7 +2,7 @@
 import React from 'react';
 import './EventModal.css';
 
-const EventModal = ({ event, isOpen, onClose }) => {
+const EventModal = ({ event, isOpen, onClose, onDelete }) => {
   if (!isOpen || !event) return null;
 
   const getCategoryEmoji = (category) => {
@@ -70,6 +70,12 @@ const EventModal = ({ event, isOpen, onClose }) => {
       return `${diffHours}h ${diffMins > 0 ? diffMins + 'm' : ''}`;
     }
     return `${diffMins}m`;
+  };
+
+  const handleDeleteClick = () => {
+    if (onDelete && event.sid) {
+      onDelete(event.sid);
+    }
   };
 
   return (
@@ -146,7 +152,16 @@ const EventModal = ({ event, isOpen, onClose }) => {
         </div>
 
         <div className="modal-footer">
-          <button className="btn-secondary" onClick={onClose}>Close</button>
+          <div className="modal-footer-left">
+            {onDelete && (
+              <button className="btn-danger" onClick={handleDeleteClick}>
+                🗑️ Delete Event
+              </button>
+            )}
+          </div>
+          <div className="modal-footer-right">
+            <button className="btn-secondary" onClick={onClose}>Close</button>
+          </div>
         </div>
       </div>
     </div>
