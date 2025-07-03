@@ -6,7 +6,13 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <h1>Schedule Calendar</h1>
+      <header className="app-header">
+        <img src="/canopyai-logo.png" alt="CanopyAI University" className="university-logo" />
+        <div className="header-text">
+          <h1>CanopyAI University</h1>
+          <h2>Academic Calendar</h2>
+        </div>
+      </header>
       <Calendar />
     </div>
   );

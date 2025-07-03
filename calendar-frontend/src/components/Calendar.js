@@ -12,7 +12,7 @@ const Calendar = () => {
     sid: "",
     name: "",
     content: "",
-    category: "Business",
+    category: "Lecture",
     level: 1,
     status: 0.0,
     creation_time: "",
@@ -97,9 +97,26 @@ const Calendar = () => {
       {/* Schedule creation form */}
       {showForm && (
         <form onSubmit={handleFormSubmit} className="schedule-form">
-          <input type="text" name="sid" placeholder="ID" onChange={handleInputChange} required />
-          <input type="text" name="name" placeholder="Name" onChange={handleInputChange} required />
-          <input type="text" name="content" placeholder="Content" onChange={handleInputChange} />
+          <input type="text" name="name" placeholder="Event Name" onChange={handleInputChange} required />
+          <input type="text" name="content" placeholder="Description" onChange={handleInputChange} />
+          <select name="category" onChange={handleInputChange} value={newSchedule.category}>
+            <option value="Lecture">Lecture</option>
+            <option value="Lab">Lab</option>
+            <option value="Meeting">Meeting</option>
+            <option value="Office Hours">Office Hours</option>
+            <option value="Assignment">Assignment</option>
+            <option value="Defense">Defense</option>
+            <option value="Workshop">Workshop</option>
+            <option value="Study Group">Study Group</option>
+            <option value="Seminar">Seminar</option>
+            <option value="Grading">Grading</option>
+            <option value="Advising">Advising</option>
+          </select>
+          <select name="level" onChange={handleInputChange} value={newSchedule.level}>
+            <option value="1">Low Priority</option>
+            <option value="2">Medium Priority</option>
+            <option value="3">High Priority</option>
+          </select>
           <input type="datetime-local" name="start_time" onChange={handleInputChange} required />
           <input type="datetime-local" name="end_time" onChange={handleInputChange} required />
           <button type="submit">Create Schedule</button>

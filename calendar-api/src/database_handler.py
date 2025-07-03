@@ -42,7 +42,16 @@ class DatabaseHandler:
         else:
             cmd = f'SELECT * FROM {table_name}'
             self.execute(cmd)
-        return self.c.fetchall()
+        
+        # Get column names
+        columns = [description[0] for description in self.c.description] if self.c.description else []
+        rows = self.c.fetchall()
+        
+        # Convert to list of dictionaries
+        result = []
+        for row in rows:
+            result.append(dict(zip(columns, row)))
+        return result
 
     def check_existence(self, table_name: str, condition: dict):
         result = self.fetch_data(table_name, condition)
