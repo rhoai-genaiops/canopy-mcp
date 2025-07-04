@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: calendar-mcp-server-config
+  namespace: redwood-university
+  labels:
+    app: calendar-mcp-server
+    component: mcp-server
+data:
+  CALENDAR_API_BASE_URL: "http://calendar-api:8000"
+  UNIVERSITY_NAME: "Redwood Digital University"
+  SYSTEM_BRANDING: "Powered by CanopyAI"
+  LOG_LEVEL: "INFO"

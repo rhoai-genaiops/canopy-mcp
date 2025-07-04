@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calendar-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: calendar-api
+  template:
+    metadata:
+      labels:
+        app: calendar-api
+    spec:
+      containers:
+        - name: calendar-api
+          image: quay.io/rcarrata/calendar-api:v1
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - name: calendar-db-volume
+              mountPath: /app/CalendarDB.db
+              subPath: CalendarDB.db
+      volumes:
+        - name: calendar-db-volume
+          persistentVolumeClaim:
+            claimName: calendar-db-pvc

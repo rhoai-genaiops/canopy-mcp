@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-init-job
+spec:
+  template:
+    metadata:
+      name: db-init-job
+    spec:
+      restartPolicy: OnFailure
+      volumes:
+        - name: calendar-db-volume
+          persistentVolumeClaim:
+            claimName: calendar-db-pvc
+      containers:
+        - name: init-container
+          image: quay.io/rcarrata/calendar-api:v1
+          command: ["python3", "build.py"]
+          volumeMounts:
+            - name: calendar-db-volume
+              mountPath: /app/CalendarDB.db
+              subPath: CalendarDB.db
+          env:
+            - name: CONFIG_PATH
+              value: "/app/db.conf"
