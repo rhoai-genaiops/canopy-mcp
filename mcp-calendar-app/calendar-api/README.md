@@ -56,5 +56,5 @@ The test data includes various Redwood Digital University activities (lectures, 
 
 ```md
 python build.py
-docker run -d --name calendar-api -p 8000:8000 -v $(pwd)/CalendarDB.db:/app/CalendarDB.db calendar-api:v1
+podman run -d --name calendar-api -p 8000:8000 -v $(pwd)/CalendarDB.db:/app/CalendarDB.db calendar-api:v1
 ```

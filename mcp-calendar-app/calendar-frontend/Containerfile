@@ -1,39 +1,29 @@
-# Use Node.js 18 LTS for building
-FROM node:18-alpine AS builder
-
-# Set working directory
+# 1) Builder stage: install & build
+FROM node:18-slim AS builder
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy lockfile first so layer invalidation only on deps change
+COPY package.json package-lock.json ./
 
-# Copy source code
-COPY src/ ./src/
-COPY public/ ./public/
+# Fallback to npm install (since npm ci is erroring)
+RUN npm install --no-audit --no-fund
 
-# Install dependencies and build
-RUN npm install && npm run build
+# Copy the rest of your source
+COPY . .
 
-# Use nginx to serve the static files
-FROM nginx:alpine
+# Build the React app
+RUN npm run build
 
-# Copy built app from builder stage
+# 2) Runtime stage: serve with nginx
+FROM nginx:stable-alpine
+COPY src/nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /app/build /usr/share/nginx/html
 
-# Copy complete nginx configuration
-COPY src/nginx.conf /etc/nginx/nginx.conf
+# Create non-root user & fix permissions
+RUN addgroup -g 1001 appuser \
+ && adduser -u 1001 -G appuser -s /sbin/nologin -D appuser \
+ && chown -R appuser:appuser /usr/share/nginx/html
 
-# Create non-root user and set permissions
-RUN addgroup -g 1001 nginx-user && \
-    adduser -u 1001 -G nginx-user -s /bin/sh -D nginx-user && \
-    chown -R nginx-user:nginx-user /usr/share/nginx/html && \
-    mkdir -p /tmp/nginx_client_temp /tmp/nginx_proxy_temp /tmp/nginx_fastcgi_temp /tmp/nginx_uwsgi_temp /tmp/nginx_scgi_temp && \
-    chown -R nginx-user:nginx-user /tmp/nginx_*
-
-USER nginx-user
-
-# Expose port
+USER appuser
 EXPOSE 8080
-
-# Start nginx
 CMD ["nginx", "-g", "daemon off;"]

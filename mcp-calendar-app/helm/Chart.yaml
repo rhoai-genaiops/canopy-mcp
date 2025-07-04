@@ -1,0 +1,19 @@
+apiVersion: v2
+name: redwood-calendar
+description: A Helm chart for Redwood Digital University Calendar System
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - calendar
+  - university
+  - mcp
+  - ai
+home: https://github.com/redwood-university/calendar-system
+sources:
+  - https://github.com/redwood-university/calendar-system
+maintainers:
+  - name: Redwood Digital University
+    email: devops@redwood.edu
+annotations:
+  category: Education
