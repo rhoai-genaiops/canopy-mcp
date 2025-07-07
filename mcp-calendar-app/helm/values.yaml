@@ -13,8 +13,8 @@ university:
 calendarApi:
   enabled: true
   image:
-    repository: calendar-api
-    tag: latest
+    repository: rhoai-genaiops/calendar-api
+    tag: v1
     pullPolicy: IfNotPresent
   
   replicaCount: 1
@@ -45,8 +45,8 @@ calendarApi:
 calendarFrontend:
   enabled: true
   image:
-    repository: calendar-frontend
-    tag: latest
+    repository: rhoai-genaiops/calendar-frontend
+    tag: v1
     pullPolicy: IfNotPresent
 
   replicaCount: 1
@@ -75,8 +75,8 @@ calendarFrontend:
 calendarMcpServer:
   enabled: true
   image:
-    repository: calendar-mcp-server
-    tag: latest
+    repository: rhoai-genaiops/calendar-mcp-server
+    tag: v1
     pullPolicy: IfNotPresent
   
   replicaCount: 1
