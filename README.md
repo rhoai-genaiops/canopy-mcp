@@ -4,7 +4,7 @@ Model Context Protocol (MCP) servers enable AI agents to interact with external 
 
 ### MCP Calendar App for Canopy AI Users
 
-The calendar-mcp-server demonstrates a complete university calendar system with backend API, React frontend, and MCP server for AI agent integration - more MCP servers will be added in the future.
+The [calendar-mcp-server](./mcp-calendar-app/) demonstrates a complete university calendar system with backend API, React frontend, and MCP server for AI agent integration - more MCP servers will be added in the future.
 
 * [calendar-api](calendar-api/) - FastAPI backend with SQLite database
 * [calendar-frontend](calendar-frontend/) - React frontend with enterprise deployment templates  

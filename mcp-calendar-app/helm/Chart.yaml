@@ -1,6 +1,6 @@
 apiVersion: v2
-name: redwood-calendar
-description: A Helm chart for Redwood Digital University Calendar System
+name: canopy-mcp-calendar
+description: A Helm chart for Canopy AI Calendar System at RDU
 type: application
 version: 1.0.0
 appVersion: "1.0.0"
@@ -9,11 +9,10 @@ keywords:
   - university
   - mcp
   - ai
-home: https://github.com/redwood-university/calendar-system
+home: https://github.com/rhoai-genaiops/canopy-mcp
 sources:
-  - https://github.com/redwood-university/calendar-system
+  - https://github.com/rhoai-genaiops/canopy-mcp
 maintainers:
-  - name: Redwood Digital University
-    email: devops@redwood.edu
-annotations:
-  category: Education
+  - name: ckavili
+  - name: RHrolun
+  - name: rcarrata
